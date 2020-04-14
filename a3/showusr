@@ -1,0 +1,19 @@
+#Do not include a sh-bang (#!/bin/bash) in this script.
+#Do not write code outside of this function body
+function fname()
+{
+	if [ $# -eq 0 ]
+	then 
+		export FNAME="ERROR"
+		return 1
+	fi
+	#Cannot find argument
+	if [ -z "$(pinky | grep $1)" ]
+	then 
+		export FNAME="NOTFOUND"
+		return 0
+	else
+		export FNAME=$(pinky -f $1 | awk '{print $2}')
+		return 0
+	fi
+}

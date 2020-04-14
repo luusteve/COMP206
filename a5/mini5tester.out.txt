@@ -1,0 +1,326 @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  bankapp tests @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+********************************************************************************
+[[[ Compilation test ]]]
+--> Test Case 01 <--
+gcc -o bankapp bankapp.c
+gcc return code is 0
+********************************************************************************
+
+[[[[ FAIL - incorrect usage ]]]]
+--> Test Case 02 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1024,John Smith
+</DATAFILEBEFORE>
+./bankapp
+---- contents to stderr is ----
+<STDERR>
+Error, incorrect usage!
+-a ACCTNUM NAME
+-d ACCTNUM DATE AMOUNT
+-w ACCTNUM DATE AMOUNT
+</STDERR>
+<DATAFILEAFTER>
+AC,1024,John Smith
+</DATAFILEAFTER>
+return code is 1
+********************************************************************************
+
+--> Test Case 03 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1024,John Smith
+</DATAFILEBEFORE>
+./bankapp -a 1024
+---- contents to stderr is ----
+<STDERR>
+Error, incorrect usage!
+-a ACCTNUM NAME
+</STDERR>
+<DATAFILEAFTER>
+AC,1024,John Smith
+</DATAFILEAFTER>
+return code is 1
+********************************************************************************
+
+--> Test Case 04 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1024,John Smith
+</DATAFILEBEFORE>
+./bankapp -d 1024 2010-02-12
+---- contents to stderr is ----
+<STDERR>
+Error, incorrect usage!
+-d ACCTNUM DATE AMOUNT
+</STDERR>
+<DATAFILEAFTER>
+AC,1024,John Smith
+</DATAFILEAFTER>
+return code is 1
+********************************************************************************
+
+--> Test Case 05 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1024,John Smith
+TX,1024,2010-02-12,1500
+</DATAFILEBEFORE>
+./bankapp -w 1024
+---- contents to stderr is ----
+<STDERR>
+Error, incorrect usage!
+-w ACCTNUM DATE AMOUNT
+</STDERR>
+<DATAFILEAFTER>
+AC,1024,John Smith
+TX,1024,2010-02-12,1500
+</DATAFILEAFTER>
+return code is 1
+********************************************************************************
+
+
+[[[[ FAIL - data file is missing ]]]]
+--> Test Case 06 <--
+********************************************************************************
+<DATAFILEBEFORE>
+<NO FILE>
+</DATAFILEBEFORE>
+./bankapp -a 1024 John Smith
+---- contents to stderr is ----
+<STDERR>
+Error, unable to locate the data file bankdata.csv
+</STDERR>
+<DATAFILEAFTER>
+<NO FILE>
+</DATAFILEAFTER>
+return code is 100
+********************************************************************************
+
+
+[[[[ Handle an empty data file gracefully ]]]]
+--> Test Case 07 <--
+********************************************************************************
+<DATAFILEBEFORE>
+</DATAFILEBEFORE>
+./bankapp -a 1024 John Smith
+<DATAFILEAFTER>
+AC,1024,John Smith
+</DATAFILEAFTER>
+return code is 0
+********************************************************************************
+
+--> Test Case 08 <--
+********************************************************************************
+<DATAFILEBEFORE>
+</DATAFILEBEFORE>
+./bankapp -d 1024 2020-02-10 400.00
+Error, account number 1024 does not exists
+<DATAFILEAFTER>
+</DATAFILEAFTER>
+return code is 50
+********************************************************************************
+
+--> Test Case 09 <--
+********************************************************************************
+<DATAFILEBEFORE>
+</DATAFILEBEFORE>
+./bankapp -w 1024 2020-02-10 400.00
+Error, account number 1024 does not exists
+<DATAFILEAFTER>
+</DATAFILEAFTER>
+return code is 50
+********************************************************************************
+
+
+[[[[ WORKS - Add a new account ]]]]
+--> Test Case 10 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEBEFORE>
+./bankapp -a 1027 Jane Smith
+<DATAFILEAFTER>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+AC,1027,Jane Smith
+</DATAFILEAFTER>
+return code is 0
+********************************************************************************
+
+
+[[[[ FAILS - Add Account - account number already exists ]]]]
+--> Test Case 11 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEBEFORE>
+./bankapp -a 1024 Jane Smith
+---- contents to stderr is ----
+<STDERR>
+Error, account number 1024 already exists
+</STDERR>
+<DATAFILEAFTER>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEAFTER>
+return code is 50
+********************************************************************************
+
+
+[[[[ WORKS - make a deposit ]]]]
+--> Test Case 12 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEBEFORE>
+./bankapp -d 1024 2020-02-13 2500.45
+<DATAFILEAFTER>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+TX,1024,2020-02-13,2500.45
+</DATAFILEAFTER>
+return code is 0
+********************************************************************************
+
+
+[[[[ FAILS - deposit - account number does not exists ]]]]
+--> Test Case 13 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEBEFORE>
+./bankapp -d 1029 2020-02-13 2500.45
+---- contents to stderr is ----
+<STDERR>
+Error, account number 1029 does not exists
+</STDERR>
+<DATAFILEAFTER>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEAFTER>
+return code is 50
+********************************************************************************
+
+
+[[[[ FAILS - withdrawal - account number does not exists ]]]]
+--> Test Case 14 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEBEFORE>
+./bankapp -w 1029 2020-02-13 2500.45
+---- contents to stderr is ----
+<STDERR>
+Error, account number 1029 does not exists
+</STDERR>
+<DATAFILEAFTER>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1025,2020-02-11,-300.00
+TX,1024,2020-02-12,200.00
+</DATAFILEAFTER>
+return code is 50
+********************************************************************************
+
+
+[[[[ FAILS - withdrawal - no sufficient balance ]]]]
+--> Test Case 15 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1026,2020-02-11,100.00
+TX,1025,2020-02-11,-300.60
+TX,1024,2020-02-12,200.00
+</DATAFILEBEFORE>
+./bankapp -w 1025 2020-02-13 500.45
+---- contents to stderr is ----
+<STDERR>
+Error, account number 1025 has only 99.40
+</STDERR>
+<DATAFILEAFTER>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1026,2020-02-11,100.00
+TX,1025,2020-02-11,-300.60
+TX,1024,2020-02-12,200.00
+</DATAFILEAFTER>
+return code is 60
+********************************************************************************
+
+
+[[[[ WORKS - withdrawal ]]]]
+--> Test Case 16 <--
+********************************************************************************
+<DATAFILEBEFORE>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1026,2020-02-11,100.00
+TX,1025,2020-02-11,-300.60
+TX,1024,2020-02-12,200.00
+</DATAFILEBEFORE>
+./bankapp -w 1025 2020-02-13 99.30
+<DATAFILEAFTER>
+AC,1025,John Snow
+AC,1024,John Smith
+TX,1025,2020-01-10,400.00
+AC,1026,Mary Jane
+TX,1026,2020-02-11,100.00
+TX,1025,2020-02-11,-300.60
+TX,1024,2020-02-12,200.00
+TX,1025,2020-02-13,-99.30
+</DATAFILEAFTER>
+return code is 0
+********************************************************************************
+

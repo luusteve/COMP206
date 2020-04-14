@@ -1,0 +1,47 @@
+commit 8cb4bae8711d520d877b4526a0b49d80dc3f4a49
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Mon Apr 13 21:57:27 2020 -0400
+
+    Completed assignment all test pass
+
+commit f9360b9c900811bc636f374b15b7073fa0e931d0
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Mon Apr 13 21:44:14 2020 -0400
+
+    Added Makefile + Debugged
+
+commit c8e00dbb7f35406443ad3f2b2256cf8b64497aca
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Mon Apr 13 19:10:17 2020 -0400
+
+    added poly.h, completed polyapp.c
+
+commit e676c58257de7f99721c217732ef0d3382be9dad
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Mon Apr 13 18:40:30 2020 -0400
+
+    Fixed typo, completed poly.c and added utils.c header file
+
+commit cb58a1820b5e977f92498136afb68d4627362aa9
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Mon Apr 13 18:24:50 2020 -0400
+
+    Completed displayPolynomial() and addPolyTerm(int coeff, int expo)
+
+commit aef4c0e0abae93d59730f060ad85c0c379bceb2c
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Mon Apr 13 17:12:15 2020 -0400
+
+    Finished utils.c
+
+commit 1ebc80a2976f956d1237407f42ecabece42e2bb6
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Sun Apr 12 23:47:27 2020 -0400
+
+    initialized all .c files
+
+commit df47717cdbab4766e2eca1ad1bd29aca9b2345d8
+Author: Steven <luu.stevenluu@gmail.com>
+Date:   Sun Apr 12 23:40:50 2020 -0400
+
+    Initial commit

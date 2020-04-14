@@ -1,0 +1,7 @@
+# You may edit this file for your testing.
+# You should only change the values of the variables for the purpose of your testing
+# However, TAs will use their own a3config file to test your script with.
+# Therefore, do not add any other code here that is required for your scrip's execution.
+DIRNAME=/tmp/__206__$LOGNAME/mydir
+EXTENSION=msg
+SHOW=true

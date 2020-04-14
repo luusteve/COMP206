@@ -1,0 +1,86 @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  tarzan.sh tests @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+[[[[ FAIL - incorrect usage ]]]]
+********************************************************************************
+./tarzan.sh
+Usage ./tarzan.sh filename tarfile
+********************************************************************************
+./tarzan.sh 206notes.txt
+Usage ./tarzan.sh filename tarfile
+********************************************************************************
+[[[[ FAIL - tar file not found ]]]]
+********************************************************************************
+./tarzan.sh 206notes.txt /tmp/__tmp_comp206_jdsilv2/206tartest/tar3.tar
+Error cannot find tar file /tmp/__tmp_comp206_jdsilv2/206tartest/tar3.tar
+********************************************************************************
+[[[[ WORKS - tar has the file ]]]]
+********************************************************************************
+./tarzan.sh 206notes.txt /tmp/__tmp_comp206_jdsilv2/206tartest/tar1.tar
+206notes.txt exists in /tmp/__tmp_comp206_jdsilv2/206tartest/tar1.tar
+********************************************************************************
+[[[[ WORKS - tar does not contain the file ]]]]
+********************************************************************************
+./tarzan.sh 206notes.txt /tmp/__tmp_comp206_jdsilv2/206tartest/tar2.tar
+206notes.txt does not exist in /tmp/__tmp_comp206_jdsilv2/206tartest/tar2.tar
+********************************************************************************
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  seeker.sh tests @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+[[[[ FAIL - incorrect usage ]]]]
+********************************************************************************
+./seeker.sh
+Error missing the pattern argument.
+Usage ./seeker.sh [-c] [-a] pattern [path]
+********************************************************************************
+./seeker.sh -c
+Error missing the pattern argument.
+Usage ./seeker.sh [-c] [-a] pattern [path]
+********************************************************************************
+./seeker.sh -a
+Error missing the pattern argument.
+Usage ./seeker.sh [-c] [-a] pattern [path]
+********************************************************************************
+./seeker.sh -c -a
+Error missing the pattern argument.
+Usage ./seeker.sh [-c] [-a] pattern [path]
+********************************************************************************
+[[[[ FAIL - directory not present ]]]]
+********************************************************************************
+./seeker.sh msg /nosuchdir
+Error /nosuchdir is not a valid directory
+********************************************************************************
+./seeker.sh -a msg /nosuchdir
+Error /nosuchdir is not a valid directory
+********************************************************************************
+[[[[ FAIL - cannot find pattern ]]]]
+********************************************************************************
+./seeker.sh -a meow /tmp/__tmp_comp206_jdsilv2
+Unable to locate any files that has pattern meow in its name in /tmp/__tmp_comp206_jdsilv2.
+********************************************************************************
+[[[[ WORKS ]]]]
+********************************************************************************
+./seeker.sh -a msg /tmp/__tmp_comp206_jdsilv2
+/tmp/__tmp_comp206_jdsilv2/msg2.txt
+/tmp/__tmp_comp206_jdsilv2/msg.txt
+********************************************************************************
+./seeker.sh msg /tmp/__tmp_comp206_jdsilv2
+/tmp/__tmp_comp206_jdsilv2/msg2.txt
+********************************************************************************
+./seeker.sh -c msg /tmp/__tmp_comp206_jdsilv2
+==== Contents of: /tmp/__tmp_comp206_jdsilv2/msg2.txt ====
+Hi, I am msg2.txt
+Not all those who wander are lost.
+********************************************************************************
+./seeker.sh -c -a msg /tmp/__tmp_comp206_jdsilv2
+==== Contents of: /tmp/__tmp_comp206_jdsilv2/msg2.txt ====
+Hi, I am msg2.txt
+Not all those who wander are lost.
+==== Contents of: /tmp/__tmp_comp206_jdsilv2/msg.txt ====
+Hello there, I am msg.txt
+********************************************************************************
+/home/2013/jdsilv2/teaching/git/comp206/Assignments/Mini2-Bash/solution/seeker.sh -c -a msg
+==== Contents of: /tmp/__tmp_comp206_jdsilv2/msg2.txt ====
+Hi, I am msg2.txt
+Not all those who wander are lost.
+==== Contents of: /tmp/__tmp_comp206_jdsilv2/msg.txt ====
+Hello there, I am msg.txt
+********************************************************************************
